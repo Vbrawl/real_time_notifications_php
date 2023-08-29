@@ -3,7 +3,7 @@
 
 namespace REAL_TIME_NOTIFICATIONS {
 
-    class Notification {
+    class Notification implements \JsonSerializable {
 
         private $notification_id = 0;
         private $receiver_id = 0;
@@ -24,6 +24,14 @@ namespace REAL_TIME_NOTIFICATIONS {
                 $this->notification_id = $id;
             }
             return $id;
+        }
+
+        function jsonSerialize(): mixed {
+            return array(
+                'receiver_id' => $this->receiver_id,
+                'message' => $this->message,
+                'notification_id' => $this->notification_id
+            );
         }
 
         function delete() {
