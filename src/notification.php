@@ -5,19 +5,19 @@ namespace REAL_TIME_NOTIFICATIONS {
 
     class Notification implements \JsonSerializable {
 
-        private $notification_id = 0;
-        private $receiver_id = 0;
-        private $message = 0;
-        private $db = 0;
+        private ?int $notification_id = null;
+        private int $receiver_id = 0;
+        private string $message = '';
+        private ?Database $db = null;
 
-        function __construct($db, $receiver_id, $message, $notification_id = 0) {
+        function __construct(Database &$db, int $receiver_id, string $message, ?int $notification_id = null) {
             $this->db = $db;
             $this->receiver_id = $receiver_id;
             $this->message = $message;
             $this->notification_id = $notification_id;
         }
 
-        function add() {
+        function add(): ?int {
             $id = $this->db->add_notification($this->receiver_id, $this->message);
 
             if($id != null) {
@@ -34,23 +34,23 @@ namespace REAL_TIME_NOTIFICATIONS {
             );
         }
 
-        function delete() {
+        function delete() : bool {
             return $this->db->delete_notification($this->receiver_id, $this->notification_id);
         }
 
-        function get_notification_id() {
+        function get_notification_id() : int {
             return $this->notification_id;
         }
 
-        function get_receiver_id() {
+        function get_receiver_id() : int {
             return $this->receiver_id;
         }
 
-        function get_message() {
+        function get_message() : string {
             return $this->message;
         }
 
-        function get_db() {
+        function &get_db() : ?Database {
             return $this->db;
         }
 

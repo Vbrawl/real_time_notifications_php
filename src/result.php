@@ -3,22 +3,19 @@
 
 namespace REAL_TIME_NOTIFICATIONS {
 
-    require_once(REAL_TIME_NOTIFICATIONS_PATH.'/src/notification.php');
-
     class Results {
-        private $results = null;
-        private $db = null;
+        private ?\DATABASE_ADAPTER\DBAdapter $results = null;
+        private ?\DATABASE_ADAPTER\RESULTAdapter $db = null;
 
-        function __construct($db, $result) {
+        function __construct(\DATABASE_ADAPTER\DBAdapter $db, \DATABASE_ADAPTER\RESULTAdapter $result) {
             $this->db = $db;
             $this->results = $result;
         }
 
-        function getNotification() {
+        function getNotification() : ?Notification {
             $row = $this->results->getRowA();
             if($row) {
-                $noti = new Notification($this->db, $row["receiver_id"], $row['message'], $row['id']);
-                return $noti;
+                return new Notification($this->db, $row["receiver_id"], $row['message'], $row['id']);
             }
         }
     }
